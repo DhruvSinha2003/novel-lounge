@@ -1,18 +1,18 @@
 import ePub from "epubjs";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTheme } from "../contexts/ThemeContext";
 
 export const Reader = ({ file }) => {
   const { theme } = useTheme();
   const viewerRef = useRef(null);
-  const bookRef = useRef(null);
+  const [book, setBook] = useState(null);
 
   useEffect(() => {
     if (file && viewerRef.current) {
-      const book = ePub(file);
-      bookRef.current = book;
+      const newBook = ePub(file);
+      setBook(newBook);
 
-      const rendition = book.renderTo(viewerRef.current, {
+      const rendition = newBook.renderTo(viewerRef.current, {
         width: "100%",
         height: "100%",
         spread: "none",
@@ -30,7 +30,9 @@ export const Reader = ({ file }) => {
       rendition.display();
 
       return () => {
-        book.destroy();
+        if (newBook) {
+          newBook.destroy();
+        }
       };
     }
   }, [file, theme]);

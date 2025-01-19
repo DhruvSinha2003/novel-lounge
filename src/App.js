@@ -10,15 +10,17 @@ const App = () => {
 
   return (
     <ThemeProvider>
-      <Navbar />
-      {currentFile ? (
-        <>
-          <Sidebar book={currentFile} />
-          <Reader file={currentFile} />
-        </>
-      ) : (
-        <Home onFileSelect={setCurrentFile} />
-      )}
+      <div className="min-h-screen">
+        <Navbar />
+        {currentFile ? (
+          <div className="flex">
+            <Sidebar book={currentFile} />
+            <Reader file={currentFile} />
+          </div>
+        ) : (
+          <Home onFileSelect={setCurrentFile} />
+        )}
+      </div>
     </ThemeProvider>
   );
 };
